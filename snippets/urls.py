@@ -1,11 +1,13 @@
-from django.urls import path
-from rest_framework.urlpatterns import format_suffix_patterns
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
 from . import views
 
-urlpatterns = [
-   path('snippets/', views.snippet_list),
-   path('snippets/<int:pk>/', views.snippet_detail),
-]
+router = DefaultRouter()
+router.register(r'snippets', views.SnippetViewSet)
+router.register(r'users', views.UserViewSet)
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+urlpatterns = [
+    path('', include(router.urls)),
+    path('auth/', include('rest_framework.urls')),
+]
